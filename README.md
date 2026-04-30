@@ -49,6 +49,26 @@ template/
 └── cli/        Node CLI for local render + push
 ```
 
+## Custom CSS (Obsidian snippets)
+
+The renderer is compatible with Obsidian's CSS snippet system. Drop `.css` files
+into `<vault>/.obsidian/snippets/` and the build picks them up.
+
+If `<vault>/.obsidian/appearance.json` is present (Obsidian writes it), only
+snippets in its `enabledCssSnippets` array are loaded — matching whatever you
+have toggled on in Obsidian's Settings → Appearance pane. If the file is
+missing, every `.css` file in the snippets folder is loaded.
+
+To make community snippets work out of the box, the rendered DOM mirrors
+Obsidian's:
+
+- The article wrapper is `<article class="markdown-preview-view markdown-rendered">`
+- Wikilinks carry `class="internal internal-link"` (resolved) or `class="internal internal-link is-unresolved"` (broken)
+- Callouts emit both a `callout-<type>` class and a `data-callout="<type>"` attribute
+
+Snippets concatenate into `/user.css` and load after the default theme, so they
+override cleanly.
+
 ## Sync model
 
 The CLI syncs incrementally via the manifest:
