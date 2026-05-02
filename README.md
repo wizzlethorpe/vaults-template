@@ -47,6 +47,16 @@ your Cloudflare Pages project (one wrangler deploy per push)
 
 That's it for single-role builds. For multi-role builds with role-gated content (`> [!dm]`, `role: dm` frontmatter), see the **Roles & auth** section below.
 
+### Tip: skip the path argument
+
+Every command takes the vault path as a positional argument (default = cwd). Set `VAULT_PATH` in your shell to make it default to your vault wherever you run the CLI:
+
+```bash
+export VAULT_PATH=~/Documents/MyVault
+vaults role list           # operates on MyVault
+vaults push                # pushes MyVault
+```
+
 ## What you get
 
 The deployment serves:
