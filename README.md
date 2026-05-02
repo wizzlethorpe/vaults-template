@@ -1,4 +1,4 @@
-# vaults-template
+# vaults-cli
 
 Self-deployable Cloudflare template for hosting an Obsidian vault as a static wiki, with an MCP server for AI tooling and a static manifest for Foundry/etc. sync.
 
@@ -31,7 +31,7 @@ your Cloudflare Pages project (one wrangler deploy per push)
 1. Create a Pages project in Cloudflare (one-time, via dashboard or `wrangler pages project create my-vault --production-branch=main`).
 2. From your local Obsidian vault, install the CLI:
    ```
-   cd /path/to/vaults-template/cli
+   cd /path/to/vaults-cli/cli
    npm link
    ```
 3. Create `.vaultrc.json` in your vault root:
@@ -61,11 +61,11 @@ vaults push                # pushes MyVault
 
 The deployment serves:
 
-- **The wiki** — every `.md` page is rendered as a static `.html` file, served by Pages from the edge.
-- **`/_manifest.json`** — all files + MD5 hashes. Foundry, AI tools, anything that wants to incrementally sync content reads this.
-- **`/<page>.md`** — raw markdown source for every page. MCP and Foundry pull these.
-- **`/_search-index.json`** — title + path + stripped body text per page. Powers client-side search.
-- **`/mcp`** — JSON-RPC MCP server (`list_files`, `read_file`, `search_text`, `grep`). Connect AI assistants here.
+- **The wiki**: every `.md` page is rendered as a static `.html` file, served by Pages from the edge.
+- **`/_manifest.json`**: all files + MD5 hashes. Foundry, AI tools, anything that wants to incrementally sync content reads this.
+- **`/<page>.md`**: raw markdown source for every page. MCP and Foundry pull these.
+- **`/_search-index.json`**: title + path + stripped body text per page. Powers client-side search.
+- **`/mcp`**: JSON-RPC MCP server (`list_files`, `read_file`, `search_text`, `grep`). Connect AI assistants here.
 
 ## Roles & auth (optional)
 
@@ -100,13 +100,13 @@ Snippets concatenate into `/user.css` and load after the default theme.
 
 ```
 template/
-└── cli/        Node CLI — render, preview, build, push, init, password
+└── cli/        Node CLI; render, preview, build, push, init, password
 ```
 
 The Pages Functions and the deployed site are entirely build artefacts; nothing ships from the template repo's directory tree.
 
 ## Sync model
 
-The CLI walks your vault, hashes each file (MD5), renders to a local cache, and runs `wrangler pages deploy`. Cloudflare Pages itself uses content hashing internally — only changed files transfer.
+The CLI walks your vault, hashes each file (MD5), renders to a local cache, and runs `wrangler pages deploy`. Cloudflare Pages itself uses content hashing internally; only changed files transfer.
 
 Foundry / external clients use the same approach: fetch `/_manifest.json`, diff against local hashes, fetch only changed paths. The manifest is statically served, no API call needed beyond a single GET.

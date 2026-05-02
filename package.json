@@ -1,5 +1,5 @@
 {
-  "name": "vaults-template",
+  "name": "vaults-cli",
   "private": true,
   "scripts": {
     "typecheck": "pnpm -r exec tsc --noEmit",
